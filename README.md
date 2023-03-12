@@ -8,6 +8,8 @@
 - Spring Boot 2.7.6
 - Maven 3.8
 - Git
+- Lombok 1.18.22
+- Hibernate 5.6.11
 
 ## Требования к окружению
 
