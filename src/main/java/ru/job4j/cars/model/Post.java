@@ -1,14 +1,13 @@
-package ru.job4j.cars.model.repository;
+package ru.job4j.cars.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import ru.job4j.cars.model.PriceHistory;
-import ru.job4j.cars.model.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -31,5 +30,5 @@ public class Post {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "auto_post_id")
-    private List<PriceHistory> priceHistoryList;
+    private List<PriceHistory> priceHistoryList = new ArrayList<>();
 }
