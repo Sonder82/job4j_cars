@@ -22,7 +22,7 @@ public class Post {
     @EqualsAndHashCode.Include
     private int id;
     private String description;
-    private LocalDateTime created;
+    private LocalDateTime created = LocalDateTime.now();
 
     @ManyToOne
     @JoinColumn(name = "auto_user_id")
@@ -35,6 +35,10 @@ public class Post {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "auto_post_id")
     private List<PriceHistory> priceHistoryList = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "photo_id")
+    private List<Photo> photoList = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
