@@ -15,9 +15,9 @@ public class PostRepository {
     private final CrudRepository crudRepository;
 
     public List<Post> findAllPostAtLastDay() {
-        var date = LocalDateTime.now();
+        var date = LocalDateTime.now().minusDays(1);
         return crudRepository.query(
-                "FROM Post WHERE created DATE_SUB(:fDate, 1)", Post.class,
+                "FROM Post WHERE created => :fDate", Post.class,
                 Map.of("fDate", date));
     }
 
