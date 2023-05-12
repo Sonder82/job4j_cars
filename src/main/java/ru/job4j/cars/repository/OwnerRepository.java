@@ -6,7 +6,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import ru.job4j.cars.model.Car;
 import ru.job4j.cars.model.Owner;
 
 import java.util.List;
@@ -33,7 +32,7 @@ public class OwnerRepository {
     public Optional<Owner> create(Owner owner) {
         Optional<Owner> rsl = Optional.empty();
         try {
-            crudRepository.run(session -> session.persist(owner));
+            crudRepository.run(session -> session.save(owner));
             rsl = Optional.of(owner);
         } catch (Exception e) {
             LOG.error("Error message: " + e.getMessage(), e);
@@ -46,8 +45,15 @@ public class OwnerRepository {
      *
      * @param owner владелец.
      */
-    public void update(Owner owner) {
-        crudRepository.run(session -> session.merge(owner));
+    public boolean update(Owner owner) {
+        boolean rsl = false;
+        try {
+            crudRepository.run(session -> session.merge(owner));
+            rsl = true;
+        } catch (Exception e) {
+            LOG.error("Error message: " + e.getMessage(), e);
+        }
+        return rsl;
     }
 
     /**
@@ -55,11 +61,18 @@ public class OwnerRepository {
      *
      * @param ownerId ID
      */
-    public void delete(int ownerId) {
-        crudRepository.run(
-                "delete from Owner WHERE id = :fId",
-                Map.of("fId", ownerId)
-        );
+    public boolean delete(int ownerId) {
+        boolean rsl = false;
+        try {
+            crudRepository.run(
+                    "delete from Owner WHERE id = :fId",
+                    Map.of("fId", ownerId)
+            );
+            rsl = true;
+        } catch (Exception e) {
+            LOG.error("Error message: " + e.getMessage(), e);
+        }
+        return rsl;
     }
 
     /**

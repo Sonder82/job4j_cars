@@ -22,7 +22,7 @@ public class Owner {
 
     private String name;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 }

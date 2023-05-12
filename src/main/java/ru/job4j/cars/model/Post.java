@@ -36,9 +36,9 @@ public class Post {
     @JoinColumn(name = "auto_post_id")
     private List<PriceHistory> priceHistoryList = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "photo_id")
-    private List<Photo> photoList = new ArrayList<>();
+    private Photo photo;
 
     @ManyToMany
     @JoinTable(

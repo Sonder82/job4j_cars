@@ -36,15 +36,29 @@ import java.util.Optional;
             return rsl;
         }
 
-        public void update(History history) {
-            crudRepository.run(session -> session.merge(history));
+        public boolean update(History history) {
+            boolean rsl = false;
+            try {
+                crudRepository.run(session -> session.merge(history));
+                rsl = true;
+            } catch (Exception e) {
+                LOG.error("Error message: " + e.getMessage(), e);
+            }
+            return rsl;
         }
 
-        public void delete(int historyId) {
-            crudRepository.run(
-                    "delete from History WHERE id = :fId",
-                    Map.of("fId", historyId)
-            );
+        public boolean delete(int historyId) {
+            boolean rsl = false;
+            try {
+                crudRepository.run(
+                        "delete from History WHERE id = :fId",
+                        Map.of("fId", historyId)
+                );
+                rsl = true;
+            } catch (Exception e) {
+                LOG.error("Error message: " + e.getMessage(), e);
+            }
+            return rsl;
         }
 
 

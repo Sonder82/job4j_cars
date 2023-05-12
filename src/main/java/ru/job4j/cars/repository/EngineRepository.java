@@ -32,7 +32,7 @@ public class EngineRepository {
     public Optional<Engine> create(Engine engine) {
         Optional<Engine> rsl = Optional.empty();
         try {
-            crudRepository.run(session -> session.persist(engine));
+            crudRepository.run(session -> session.save(engine));
             rsl = Optional.of(engine);
         } catch (Exception e) {
             LOG.error("Error message: " + e.getMessage(), e);
@@ -45,8 +45,16 @@ public class EngineRepository {
      *
      * @param engine двигатель.
      */
-    public void update(Engine engine) {
-        crudRepository.run(session -> session.merge(engine));
+    public boolean update(Engine engine) {
+        boolean rsl = false;
+        try {
+            crudRepository.run(session -> session.merge(engine));
+            rsl = true;
+        } catch (Exception e) {
+            LOG.error("Error message: " + e.getMessage(), e);
+        }
+        return rsl;
+
     }
 
     /**
@@ -54,11 +62,19 @@ public class EngineRepository {
      *
      * @param engineId ID
      */
-    public void delete(int engineId) {
-        crudRepository.run(
-                "delete from Engine WHERE id = :fId",
-                Map.of("fId", engineId)
-        );
+    public boolean delete(int engineId) {
+        boolean rsl = false;
+        try {
+            crudRepository.run(
+                    "delete from Engine WHERE id = :fId",
+                    Map.of("fId", engineId)
+            );
+            rsl = true;
+        } catch (Exception e) {
+            LOG.error("Error message: " + e.getMessage(), e);
+        }
+        return rsl;
+
     }
 
     /**
@@ -78,7 +94,7 @@ public class EngineRepository {
      */
     public Optional<Engine> findById(int engineId) {
         return crudRepository.optional(
-                "FROM Engine  WHERE f.id = :fId", Engine.class,
+                "FROM Engine  WHERE id = :fId", Engine.class,
                 Map.of("fId", engineId)
         );
     }

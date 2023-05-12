@@ -1,6 +1,10 @@
 package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.User;
 
@@ -12,6 +16,11 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserRepository {
 
+    private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
+            .configure().build();
+
+    private static final Logger LOG = LoggerFactory.getLogger(CarRepository.class.getName());
+
     private final CrudRepository crudRepository;
 
     /**
@@ -21,7 +30,7 @@ public class UserRepository {
      * @return пользователь с id.
      */
     public User create(User user) {
-        crudRepository.run(session -> session.persist(user));
+        crudRepository.run(session -> session.save(user));
         return user;
     }
 
@@ -30,8 +39,14 @@ public class UserRepository {
      *
      * @param user пользователь.
      */
-    public void update(User user) {
-        crudRepository.run(session -> session.merge(user));
+    public boolean update(User user) {
+        boolean rsl = false;
+        try {
+            crudRepository.run(session -> session.merge(user));
+        } catch (Exception e) {
+            LOG.error("Error message: " + e.getMessage(), e);
+        }
+        return rsl;
     }
 
     /**
@@ -39,11 +54,17 @@ public class UserRepository {
      *
      * @param userId ID
      */
-    public void delete(int userId) {
-        crudRepository.run(
-                "delete from User WHERE id = :fId",
-                Map.of("fId", userId)
-        );
+    public boolean delete(int userId) {
+        boolean rsl = false;
+        try {
+            crudRepository.run(
+                    "delete from User WHERE id = :fId",
+                    Map.of("fId", userId)
+            );
+        } catch (Exception e) {
+            LOG.error("Error message: " + e.getMessage(), e);
+        }
+        return rsl;
     }
 
     /**

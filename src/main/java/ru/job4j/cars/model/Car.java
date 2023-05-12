@@ -32,7 +32,7 @@ public class Car {
     @JoinTable(
             name = "history_owners",
             joinColumns = {@JoinColumn(name = "car_id", nullable = false, updatable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "owners_id", nullable = false, updatable = false)}
+            inverseJoinColumns = {@JoinColumn(name = "owner_id", nullable = false, updatable = false)}
     )
     private Set<Owner> owners = new HashSet<>();
 }
