@@ -1,8 +1,6 @@
 package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -16,9 +14,6 @@ import java.util.Optional;
 @Repository
 @AllArgsConstructor
 public class PostRepository {
-
-    private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-            .configure().build();
 
     private static final Logger LOG = LoggerFactory.getLogger(CarRepository.class.getName());
 
@@ -50,7 +45,7 @@ public class PostRepository {
         boolean rsl = false;
         try {
             crudRepository.run(
-                    "delete from Post WHERE id = :fId",
+                    "DELETE Post WHERE id = :fId",
                     Map.of("fId", postId)
             );
             rsl = true;
@@ -81,18 +76,19 @@ public class PostRepository {
         var dateNow = LocalDateTime.now();
         var date = LocalDateTime.now().minusDays(1);
         return crudRepository.query(
-                "FROM Post WHERE created BETWEEN :fDate AND :fDateNow", Post.class,
+                "FROM Post AS p JOIN FETCH p.photo "
+                        + "JOIN FETCH p.car WHERE created BETWEEN :fDate AND :fDateNow", Post.class,
                 Map.of("fDate", date, "fDateNow", dateNow));
     }
 
     public List<Post> findAllPostWithPhoto() {
         return crudRepository.query(
-                "FROM Post WHERE photo_id IS NOT NULL", Post.class);
+                "FROM Post f JOIN FETCH f.photo WHERE f.photo_id IS NOT NULL", Post.class);
     }
 
     public List<Post> findAllPostWithModel(String name) {
         return crudRepository.query(
-                "FROM Post WHERE car_id IN (SELECT id FROM Car WHERE name = :fName)", Post.class,
+                "FROM Post f JOIN FETCH f.car WHERE f.car.name = :fName", Post.class,
                 Map.of("fName", name));
     }
 }

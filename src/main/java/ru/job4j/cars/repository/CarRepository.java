@@ -1,8 +1,6 @@
 package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -15,9 +13,6 @@ import java.util.Optional;
 @Repository
 @AllArgsConstructor
 public class CarRepository {
-
-    private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-            .configure().build();
 
     private static final Logger LOG = LoggerFactory.getLogger(CarRepository.class.getName());
 
@@ -65,7 +60,7 @@ public class CarRepository {
         boolean rsl = false;
         try {
             crudRepository.run(
-                    "delete from Car WHERE id = :fId",
+                    "DELETE Car WHERE id = :fId",
                     Map.of("fId", carId)
             );
             rsl = true;
@@ -82,7 +77,7 @@ public class CarRepository {
      */
     public List<Car> findAllOrderById() {
         return crudRepository.query(
-                "FROM Car ORDER BY id", Car.class);
+                "FROM Car f JOIN FETCH f.engine ORDER BY f.id", Car.class);
     }
 
     /**
@@ -92,7 +87,7 @@ public class CarRepository {
      */
     public Optional<Car> findById(int carId) {
         return crudRepository.optional(
-                "FROM Car f JOIN FETCH f.owners WHERE f.id = :fId", Car.class,
+                "FROM Car f JOIN FETCH f.engine WHERE f.id = :fId", Car.class,
                 Map.of("fId", carId)
         );
     }

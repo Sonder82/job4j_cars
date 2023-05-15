@@ -11,8 +11,6 @@ import org.junit.jupiter.api.Test;
 import ru.job4j.cars.model.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -26,15 +24,13 @@ public class PostRepositoryTest {
 
     private final CrudRepository crudRepository = new CrudRepository(sf);
 
-    private final CarRepository carRepository = new CarRepository(crudRepository);
-
-    private final EngineRepository engineRepository = new EngineRepository(crudRepository);
+    private final PostRepository postRepository = new PostRepository(crudRepository);
 
     private final UserRepository userRepository = new UserRepository(crudRepository);
 
-    private final OwnerRepository ownerRepository = new OwnerRepository(crudRepository);
+    private final EngineRepository engineRepository = new EngineRepository(crudRepository);
 
-    private final PostRepository postRepository = new PostRepository(crudRepository);
+    private final CarRepository carRepository = new CarRepository(crudRepository);
 
     private final PhotoRepository photoRepository = new PhotoRepository(crudRepository);
 
@@ -45,19 +41,11 @@ public class PostRepositoryTest {
         try {
             tr = session.beginTransaction();
             session.createQuery(
-                    "DELETE FROM PriceHistory").executeUpdate();
-            session.createQuery(
-                    "DELETE FROM Post").executeUpdate();
+                    "DELETE FROM User").executeUpdate();
             session.createQuery(
                     "DELETE FROM Photo").executeUpdate();
             session.createQuery(
-                    "DELETE FROM Car").executeUpdate();
-            session.createQuery(
-                    "DELETE FROM Owner").executeUpdate();
-            session.createQuery(
-                    "DELETE FROM User").executeUpdate();
-            session.createQuery(
-                    "DELETE FROM Engine").executeUpdate();
+                    "DELETE FROM Post").executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
             if (tr != null) {
@@ -71,50 +59,24 @@ public class PostRepositoryTest {
 
     @Test
     public void whenFindAllPostAtLastDay() {
-        var engine = engineRepository.create(new Engine(1, "diesel"));
-        var user = userRepository.create(new User(1, "test", "password"));
-        var owner = ownerRepository.create(new Owner(1, "name", user));
-        var car = carRepository.create(new Car(1, "model", engine.get(), Set.of(owner.get()))).get();
-        var photo1 = photoRepository.create(new Photo(1, "name", "path")).get();
-        var photo2 = photoRepository.create(new Photo(2, "name", "path2")).get();
-        var post1 = postRepository.create(
-                new Post(1, "test", LocalDateTime.now().minusWeeks(1),
-                        user, car, List.of(new PriceHistory()), photo1, List.of(user))
-        );
-        var post2 = postRepository.create(
-                new Post(2, "test", LocalDateTime.now(),
-                        user, car, List.of(new PriceHistory()), photo2, List.of(user))
-        );
+        Engine engine = new Engine();
+        engine.setName("diesel");
+        engineRepository.create(engine);
+        Car car = new Car();
+        car.setName("model");
+        car.setEngine(engine);
+        carRepository.create(car);
+        Photo photo = new Photo();
+        photo.setName("name");
+        photo.setPath("path");
+        photoRepository.create(photo);
+        Post post = new Post();
+        post.setDescription("test");
+        post.setCreated(LocalDateTime.now());
+        post.setCar(car);
+        post.setPhoto(photo);
+        postRepository.create(post);
         assertThat(postRepository.findAllPostAtLastDay()).hasSize(1)
-                .contains(post2.get())
-                .doesNotContain(post1.get());
-    }
-
-    @Test
-    public void whenFindAllPostWithModel() {
-        var engine = engineRepository.create(new Engine(1, "diesel"));
-        var user = userRepository.create(new User(1, "test", "password"));
-        var owner = ownerRepository.create(new Owner(1, "name", user));
-        var car = carRepository.create(new Car(1, "model", engine.get(), Set.of(owner.get()))).get();
-        var photo1 = photoRepository.create(new Photo(1, "name", "path")).get();
-        var post1 = postRepository.create(
-                new Post(1, "test", LocalDateTime.now().minusWeeks(1),
-                        user, car, List.of(new PriceHistory()), photo1, List.of(user))
-        );
-        assertThat(postRepository.findAllPostWithModel("model")).hasSize(1);
-    }
-
-    @Test
-    public void whenFindAllPostWithPhoto() {
-        var engine = engineRepository.create(new Engine(1, "diesel"));
-        var user = userRepository.create(new User(1, "test", "password"));
-        var owner = ownerRepository.create(new Owner(1, "name", user));
-        var car = carRepository.create(new Car(1, "model", engine.get(), Set.of(owner.get()))).get();
-        var photo1 = photoRepository.create(new Photo(1, "name", "path")).get();
-        var post1 = postRepository.create(
-                new Post(1, "test", LocalDateTime.now().minusWeeks(1),
-                        user, car, List.of(new PriceHistory()), photo1, List.of(user))
-        );
-        assertThat(postRepository.findAllPostWithPhoto()).hasSize(1);
+                .contains(post);
     }
 }

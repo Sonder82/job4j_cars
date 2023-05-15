@@ -31,14 +31,6 @@ public class UserRepositoryTest {
         try {
             tr = session.beginTransaction();
             session.createQuery(
-                    "DELETE FROM PriceHistory").executeUpdate();
-            session.createQuery(
-                    "DELETE FROM Post").executeUpdate();
-            session.createQuery(
-                    "DELETE FROM Car").executeUpdate();
-            session.createQuery(
-                    "DELETE FROM Owner").executeUpdate();
-            session.createQuery(
                     "DELETE FROM User").executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {

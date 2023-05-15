@@ -1,8 +1,6 @@
 package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -15,9 +13,6 @@ import java.util.Optional;
 @Repository
 @AllArgsConstructor
 public class OwnerRepository {
-
-    private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-            .configure().build();
 
     private static final Logger LOG = LoggerFactory.getLogger(OwnerRepository.class.getName());
 
@@ -65,7 +60,7 @@ public class OwnerRepository {
         boolean rsl = false;
         try {
             crudRepository.run(
-                    "delete from Owner WHERE id = :fId",
+                    "DELETE Owner WHERE id = :fId",
                     Map.of("fId", ownerId)
             );
             rsl = true;
