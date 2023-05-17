@@ -18,4 +18,5 @@
     <include file="scripts/012_ddl_alter_table_auto_post_add_column_car_id.sql" relativeToChangelogFile="true"/>
     <include file="scripts/013_ddl_create_photo_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/014_ddl_alter_table_auto_post_add_column_photo_id.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/015_ddl_alter_auto_post_table.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

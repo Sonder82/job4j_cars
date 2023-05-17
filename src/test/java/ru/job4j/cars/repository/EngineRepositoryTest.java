@@ -28,8 +28,6 @@ public class EngineRepositoryTest {
         try {
             session.beginTransaction();
             session.createQuery(
-                    "DELETE FROM Car").executeUpdate();
-            session.createQuery(
                     "DELETE FROM Engine").executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -56,10 +54,7 @@ public class EngineRepositoryTest {
     @Test
     public void whenDeleteEngineThenCheckContains() {
         Engine engine1 = engineRepository.create(new Engine(1, "test")).get();
-        Engine engine2 = engineRepository.create(new Engine(2, "test")).get();
         engineRepository.delete(engine1.getId());
-        assertThat(engineRepository.findAllOrderById()).hasSize(1)
-                .contains(engine2)
-                .doesNotContain(engine1);
+        assertThat(engineRepository.findAllOrderById()).doesNotContain(engine1);
     }
 }

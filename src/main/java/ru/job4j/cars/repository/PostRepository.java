@@ -77,13 +77,13 @@ public class PostRepository {
         var date = LocalDateTime.now().minusDays(1);
         return crudRepository.query(
                 "FROM Post AS p JOIN FETCH p.photo "
-                        + "JOIN FETCH p.car WHERE created BETWEEN :fDate AND :fDateNow", Post.class,
+                        + "WHERE created BETWEEN :fDate AND :fDateNow", Post.class,
                 Map.of("fDate", date, "fDateNow", dateNow));
     }
 
     public List<Post> findAllPostWithPhoto() {
         return crudRepository.query(
-                "FROM Post f JOIN FETCH f.photo WHERE f.photo_id IS NOT NULL", Post.class);
+                "FROM Post f JOIN FETCH f.photo WHERE f.photo.id IS NOT NULL", Post.class);
     }
 
     public List<Post> findAllPostWithModel(String name) {

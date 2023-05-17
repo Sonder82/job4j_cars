@@ -9,6 +9,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.job4j.cars.model.Car;
+import ru.job4j.cars.model.Engine;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -26,6 +27,8 @@ public class CarRepositoryTest {
 
     private final EngineRepository engineRepository = new EngineRepository(crudRepository);
 
+    private final Car car = new Car();
+
     @BeforeEach
     public void wipeTable() {
         Session session = sf.openSession();
@@ -33,7 +36,11 @@ public class CarRepositoryTest {
         try {
             tr = session.beginTransaction();
             session.createQuery(
+                    "DELETE FROM Post").executeUpdate();
+            session.createQuery(
                     "DELETE FROM Car").executeUpdate();
+            session.createQuery(
+                    "DELETE FROM Engine").executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
             if (tr != null) {
@@ -45,23 +52,23 @@ public class CarRepositoryTest {
         }
     }
 
-    @Test
-    public void whenAddNewCarThenHasSameCar() {
+    public void initForCar() {
+        engineRepository.create(new Engine(1, "test"));
         var engine = engineRepository.findAllOrderById().get(0);
-        Car car = new Car();
         car.setName("model");
         car.setEngine(engine);
         carRepository.create(car);
+    }
+
+    @Test
+    public void whenAddNewCarThenHasSameCar() {
+        initForCar();
         assertThat(carRepository.findById(car.getId()).get()).isEqualTo(car);
     }
 
     @Test
     public void whenAddNewCarThenUpdateName() {
-        var engine = engineRepository.findAllOrderById().get(0);
-        Car car = new Car();
-        car.setName("model");
-        car.setEngine(engine);
-        carRepository.create(car);
+        initForCar();
         car.setName("newModel");
         carRepository.update(car);
         assertThat(carRepository.findById(car.getId()).get().getName()).isEqualTo("newModel");
@@ -69,11 +76,7 @@ public class CarRepositoryTest {
 
     @Test
     public void whenDeleteCarThenCheckContains() {
-        var engine = engineRepository.findAllOrderById().get(0);
-        Car car = new Car();
-        car.setName("model");
-        car.setEngine(engine);
-        var rsl1 = carRepository.create(car);
+        initForCar();
         carRepository.delete(car.getId());
         assertThat(carRepository.findAllOrderById()).doesNotContain(car);
     }
