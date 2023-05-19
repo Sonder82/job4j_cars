@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.job4j.cars.model.Car;
@@ -30,6 +31,15 @@ public class CarRepositoryTest {
     private final Car car = new Car();
 
     @BeforeEach
+    public void initForCar() {
+        engineRepository.create(new Engine(1, "test"));
+        var engine = engineRepository.findAllOrderById().get(0);
+        car.setName("model");
+        car.setEngine(engine);
+        carRepository.create(car);
+    }
+
+    @AfterEach
     public void wipeTable() {
         Session session = sf.openSession();
         Transaction tr = null;
@@ -52,23 +62,13 @@ public class CarRepositoryTest {
         }
     }
 
-    public void initForCar() {
-        engineRepository.create(new Engine(1, "test"));
-        var engine = engineRepository.findAllOrderById().get(0);
-        car.setName("model");
-        car.setEngine(engine);
-        carRepository.create(car);
-    }
-
     @Test
     public void whenAddNewCarThenHasSameCar() {
-        initForCar();
         assertThat(carRepository.findById(car.getId()).get()).isEqualTo(car);
     }
 
     @Test
     public void whenAddNewCarThenUpdateName() {
-        initForCar();
         car.setName("newModel");
         carRepository.update(car);
         assertThat(carRepository.findById(car.getId()).get().getName()).isEqualTo("newModel");
@@ -76,7 +76,6 @@ public class CarRepositoryTest {
 
     @Test
     public void whenDeleteCarThenCheckContains() {
-        initForCar();
         carRepository.delete(car.getId());
         assertThat(carRepository.findAllOrderById()).doesNotContain(car);
     }
