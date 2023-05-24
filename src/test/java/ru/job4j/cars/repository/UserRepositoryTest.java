@@ -45,13 +45,13 @@ public class UserRepositoryTest {
 
     @Test
     public void whenCreateUserThenGetHim() {
-        User user = userRepository.create(new User(1, "login", "password"));
+        User user = userRepository.create(new User(1, "login", "password")).get();
         assertThat(userRepository.findById(user.getId()).get()).isEqualTo(user);
     }
 
     @Test
     public void whenAddNewUserThenUpdatePassword() {
-        User user = userRepository.create(new User(1, "login2", "password"));
+        User user = userRepository.create(new User(1, "login2", "password")).get();
         user.setPassword("newPassword");
         userRepository.update(user);
         assertThat(userRepository.findById(user.getId()).get().getPassword()).isEqualTo("newPassword");
@@ -59,8 +59,8 @@ public class UserRepositoryTest {
 
     @Test
     public void whenDeleteUserThenCheckContains() {
-        User user1 = userRepository.create(new User(1, "login3", "password"));
-        User user2 = userRepository.create(new User(2, "login4", "password"));
+        User user1 = userRepository.create(new User(1, "login3", "password")).get();
+        User user2 = userRepository.create(new User(2, "login4", "password")).get();
         userRepository.delete(user1.getId());
         assertThat(userRepository.findAllOrderById()).hasSize(1)
                 .contains(user2)

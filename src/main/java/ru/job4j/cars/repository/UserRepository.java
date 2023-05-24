@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import ru.job4j.cars.model.Car;
 import ru.job4j.cars.model.User;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.ZoneId;
+import java.util.*;
 
 @Repository
 @AllArgsConstructor
@@ -24,9 +24,15 @@ public class UserRepository {
      * @param user пользователь.
      * @return пользователь с id.
      */
-    public User create(User user) {
-        crudRepository.run(session -> session.save(user));
-        return user;
+    public Optional<User> create(User user) {
+        Optional<User> rsl = Optional.empty();
+        try {
+            crudRepository.run(session -> session.save(user));
+            rsl = Optional.of(user);
+        } catch (Exception e) {
+            LOG.error("Error message: " + e.getMessage(), e);
+        }
+        return rsl;
     }
 
     /**
@@ -109,5 +115,13 @@ public class UserRepository {
        return crudRepository.optional(
                     "FROM User WHERE login = :fLogin", User.class,
                 Map.of("fLogin", login));
+    }
+
+    public List<TimeZone> listZone() {
+        List<TimeZone> zones = new ArrayList<>();
+        for (String timeId : ZoneId.getAvailableZoneIds()) {
+            zones.add(TimeZone.getTimeZone(timeId));
+        }
+        return zones;
     }
 }

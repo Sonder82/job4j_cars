@@ -7,6 +7,7 @@ import ru.job4j.cars.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 
 @Service
 @AllArgsConstructor
@@ -14,7 +15,7 @@ public class SimpleUserService {
 
     private final UserRepository userRepository;
 
-    public User create(User user) {
+    public Optional<User> create(User user) {
         return userRepository.create(user);
     }
 
@@ -40,5 +41,9 @@ public class SimpleUserService {
 
     public Optional<User> findByLogin(String login) {
         return userRepository.findByLogin(login);
+    }
+
+    public List<TimeZone> listZone() {
+        return userRepository.listZone();
     }
 }
