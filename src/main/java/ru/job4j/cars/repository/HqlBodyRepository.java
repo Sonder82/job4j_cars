@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import ru.job4j.cars.model.Photo;
+import ru.job4j.cars.model.Body;
 
 import java.util.List;
 import java.util.Map;
@@ -12,27 +12,29 @@ import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
-public class PhotoRepository {
+public class HqlBodyRepository implements BodyRepository {
 
-    private static final Logger LOG = LoggerFactory.getLogger(HqlCarRepository.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(HqlEngineRepository.class.getName());
 
     private final CrudRepository crudRepository;
 
-    public Optional<Photo> create(Photo photo) {
-        Optional<Photo> rsl = Optional.empty();
+    @Override
+    public Optional<Body> create(Body body) {
+        Optional<Body> rsl = Optional.empty();
         try {
-            crudRepository.run(session -> session.save(photo));
-            rsl = Optional.of(photo);
+            crudRepository.run(session -> session.save(body));
+            rsl = Optional.of(body);
         } catch (Exception e) {
             LOG.error("Error message: " + e.getMessage(), e);
         }
         return rsl;
     }
 
-    public boolean update(Photo photo) {
+    @Override
+    public boolean update(Body body) {
         boolean rsl = false;
         try {
-            crudRepository.run(session -> session.merge(photo));
+            crudRepository.run(session -> session.merge(body));
             rsl = true;
         } catch (Exception e) {
             LOG.error("Error message: " + e.getMessage(), e);
@@ -40,12 +42,13 @@ public class PhotoRepository {
         return rsl;
     }
 
-    public boolean delete(int photoId) {
+    @Override
+    public boolean delete(int bodyId) {
         boolean rsl = false;
         try {
             crudRepository.run(
-                    "DELETE Photo WHERE id = :fId",
-                    Map.of("fId", photoId)
+                    "DELETE Body WHERE id = :fId",
+                    Map.of("fId", bodyId)
             );
             rsl = true;
         } catch (Exception e) {
@@ -54,20 +57,17 @@ public class PhotoRepository {
         return rsl;
     }
 
-    public List<Photo> findAllOrderById() {
+    @Override
+    public List<Body> findAllOrderById() {
         return crudRepository.query(
-                "FROM Photo ORDER BY id", Photo.class);
+                "FROM Body ORDER BY id", Body.class);
     }
 
-    /**
-     * Найти автомобиль по ID
-     *
-     * @return автомобиль.
-     */
-    public Optional<Photo> findById(int photoId) {
+    @Override
+    public Optional<Body> findById(int bodyId) {
         return crudRepository.optional(
-                "FROM Photo WHERE id = :fId", Photo.class,
-                Map.of("fId", photoId)
+                "FROM Body  WHERE id = :fId", Body.class,
+                Map.of("fId", bodyId)
         );
     }
 }

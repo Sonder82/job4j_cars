@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import ru.job4j.cars.model.Car;
 import ru.job4j.cars.model.User;
 
 import java.time.ZoneId;
@@ -14,7 +13,7 @@ import java.util.*;
 @AllArgsConstructor
 public class UserRepository {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CarRepository.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(HqlCarRepository.class.getName());
 
     private final CrudRepository crudRepository;
 

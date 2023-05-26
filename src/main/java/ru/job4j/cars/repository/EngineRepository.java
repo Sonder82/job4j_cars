@@ -1,96 +1,19 @@
 package ru.job4j.cars.repository;
 
-import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.Engine;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-@Repository
-@AllArgsConstructor
-public class EngineRepository {
+public interface EngineRepository {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EngineRepository.class.getName());
+    Optional<Engine> create(Engine engine);
 
-    private final CrudRepository crudRepository;
+    boolean update(Engine engine);
 
-    /**
-     * Сохранить в базе.
-     *
-     * @param engine двигатель.
-     * @return двигатель с id.
-     */
-    public Optional<Engine> create(Engine engine) {
-        Optional<Engine> rsl = Optional.empty();
-        try {
-            crudRepository.run(session -> session.save(engine));
-            rsl = Optional.of(engine);
-        } catch (Exception e) {
-            LOG.error("Error message: " + e.getMessage(), e);
-        }
-        return rsl;
-    }
+    boolean delete(int engineId);
 
-    /**
-     * Обновить в базе двигатель.
-     *
-     * @param engine двигатель.
-     */
-    public boolean update(Engine engine) {
-        boolean rsl = false;
-        try {
-            crudRepository.run(session -> session.merge(engine));
-            rsl = true;
-        } catch (Exception e) {
-            LOG.error("Error message: " + e.getMessage(), e);
-        }
-        return rsl;
+    List<Engine> findAllOrderById();
 
-    }
-
-    /**
-     * Удалить двигатель по id.
-     *
-     * @param engineId ID
-     */
-    public boolean delete(int engineId) {
-        boolean rsl = false;
-        try {
-            crudRepository.run(
-                    "DELETE Engine WHERE id = :fId",
-                    Map.of("fId", engineId)
-            );
-            rsl = true;
-        } catch (Exception e) {
-            LOG.error("Error message: " + e.getMessage(), e);
-        }
-        return rsl;
-
-    }
-
-    /**
-     * Список двигателей отсортированных по id.
-     *
-     * @return список двигателей.
-     */
-    public List<Engine> findAllOrderById() {
-        return crudRepository.query(
-                "FROM Engine ORDER BY id", Engine.class);
-    }
-
-    /**
-     * Найти двигатель по ID
-     *
-     * @return двигатель.
-     */
-    public Optional<Engine> findById(int engineId) {
-        return crudRepository.optional(
-                "FROM Engine  WHERE id = :fId", Engine.class,
-                Map.of("fId", engineId)
-        );
-    }
+    Optional<Engine> findById(int engineId);
 }

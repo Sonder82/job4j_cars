@@ -24,9 +24,21 @@ public class Car {
 
     private String name;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "body_id")
+    private Body body;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "modelCar_id")
+    private ModelCar modelCar;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "engine_id", foreignKey = @ForeignKey(name = "ENGINE_ID_FK"))
     private Engine engine;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "transmission_id")
+    private Transmission transmission;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(

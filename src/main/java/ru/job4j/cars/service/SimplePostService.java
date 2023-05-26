@@ -3,7 +3,7 @@ package ru.job4j.cars.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.job4j.cars.model.Post;
-import ru.job4j.cars.repository.PostRepository;
+import ru.job4j.cars.repository.HqlPostRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +12,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SimplePostService {
 
-    private final PostRepository postRepository;
+    private final HqlPostRepository postRepository;
 
     public Optional<Post> create(Post post) {
         return postRepository.create(post);
