@@ -24,4 +24,9 @@ public class Photo {
 
     private String path;
 
+    public Photo(String name, String path) {
+        this.name = name;
+        this.path = path;
+    }
+
 }
