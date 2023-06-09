@@ -22,7 +22,7 @@ public class UserRepositoryTest {
 
     private final CrudRepository crudRepository = new CrudRepository(sf);
 
-    private final UserRepository userRepository = new UserRepository(crudRepository);
+    private final UserRepository userRepository = new HqlUserRepository(crudRepository);
 
     @BeforeEach
     public void wipeTable() {

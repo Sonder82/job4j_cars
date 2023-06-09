@@ -20,7 +20,7 @@ public class EngineRepositoryTest {
 
     private final CrudRepository crudRepository = new CrudRepository(sf);
 
-    private final EngineRepository engineRepository = new EngineRepository(crudRepository);
+    private final EngineRepository engineRepository = new HqlEngineRepository(crudRepository);
 
     @BeforeEach
     public void wipeTable() {

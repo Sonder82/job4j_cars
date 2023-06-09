@@ -3,17 +3,16 @@ package ru.job4j.cars.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.job4j.cars.model.User;
-import ru.job4j.cars.repository.HqlUserRepository;
+import ru.job4j.cars.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.TimeZone;
 
 @Service
 @AllArgsConstructor
 public class SimpleUserService implements UserService {
 
-    private final HqlUserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Optional<User> create(User user) {
@@ -48,9 +47,5 @@ public class SimpleUserService implements UserService {
     @Override
     public Optional<User> findByLogin(String login) {
         return userRepository.findByLogin(login);
-    }
-
-    public List<TimeZone> listZone() {
-        return userRepository.listZone();
     }
 }

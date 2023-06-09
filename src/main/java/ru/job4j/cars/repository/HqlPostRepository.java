@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
-public class HqlPostRepository {
+public class HqlPostRepository implements PostRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(HqlCarRepository.class.getName());
 

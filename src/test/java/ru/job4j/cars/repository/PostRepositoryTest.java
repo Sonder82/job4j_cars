@@ -21,13 +21,13 @@ public class PostRepositoryTest {
     ).buildMetadata().buildSessionFactory();
     private final CrudRepository crudRepository = new CrudRepository(sf);
 
-    private final PostRepository postRepository = new PostRepository(crudRepository);
+    private final PostRepository postRepository = new HqlPostRepository(crudRepository);
 
-    private final CarRepository carRepository = new CarRepository(crudRepository);
+    private final CarRepository carRepository = new HqlCarRepository(crudRepository);
 
-    private final EngineRepository engineRepository = new EngineRepository(crudRepository);
+    private final EngineRepository engineRepository = new HqlEngineRepository(crudRepository);
 
-    private final PhotoRepository photoRepository = new PhotoRepository(crudRepository);
+    private final PhotoRepository photoRepository = new HqlPhotoRepository(crudRepository);
 
     private final Post post = new Post();
 
@@ -42,11 +42,11 @@ public class PostRepositoryTest {
         carRepository.create(car);
         var carRsl = carRepository.findAllOrderById().get(0);
         photoRepository.create(new Photo(1, "test", "test"));
-        var photo = photoRepository.findAllOrderById().get(0);
+        var photo = photoRepository.findById(1);
         post.setDescription("test");
         post.setCreated(LocalDateTime.now());
         post.setCar(carRsl);
-        post.setPhoto(photo);
+        post.setPhoto(photo.get());
         postRepository.create(post);
     }
 

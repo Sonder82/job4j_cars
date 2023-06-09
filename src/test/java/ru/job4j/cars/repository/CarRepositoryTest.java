@@ -24,9 +24,9 @@ public class CarRepositoryTest {
 
     private final CrudRepository crudRepository = new CrudRepository(sf);
 
-    private final CarRepository carRepository = new CarRepository(crudRepository);
+    private final CarRepository carRepository = new HqlCarRepository(crudRepository);
 
-    private final EngineRepository engineRepository = new EngineRepository(crudRepository);
+    private final EngineRepository engineRepository = new HqlEngineRepository(crudRepository);
 
     private final Car car = new Car();
 
