@@ -26,4 +26,7 @@
     <include file="scripts/020_dml_insert_body_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/021_dml_insert_modelCar_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/022_dml_insert_transmission_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/023_ddl_alter_table_auto_post_add_column_price.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/024_ddl_alter_table_auto_post_add_column_sold.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/025_dml_insert_engine_table.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
