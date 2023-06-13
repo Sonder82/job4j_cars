@@ -2,15 +2,14 @@ package ru.job4j.cars.dto;
 
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
+@NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class PhotoDto {
 
     @EqualsAndHashCode.Include
-    private final String name;
+    private String name;
 
     private byte[] content;
 
