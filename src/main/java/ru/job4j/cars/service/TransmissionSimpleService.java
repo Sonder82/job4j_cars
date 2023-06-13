@@ -16,26 +16,26 @@ public class TransmissionSimpleService implements TransmissionService {
 
     @Override
     public Optional<Transmission> create(Transmission transmission) {
-        return Optional.empty();
+        return transmissionRepository.create(transmission);
     }
 
     @Override
     public boolean update(Transmission transmission) {
-        return false;
+        return transmissionRepository.update(transmission);
     }
 
     @Override
     public boolean delete(int transmissionId) {
-        return false;
+        return transmissionRepository.delete(transmissionId);
     }
 
     @Override
     public List<Transmission> findAllOrderById() {
-        return null;
+        return transmissionRepository.findAllOrderById();
     }
 
     @Override
     public Optional<Transmission> findById(int transmissionId) {
-        return Optional.empty();
+        return transmissionRepository.findById(transmissionId);
     }
 }

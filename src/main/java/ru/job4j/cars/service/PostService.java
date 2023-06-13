@@ -1,5 +1,8 @@
 package ru.job4j.cars.service;
 
+import ru.job4j.cars.dto.PhotoDto;
+import ru.job4j.cars.dto.PostCreateDto;
+import ru.job4j.cars.dto.PostDto;
 import ru.job4j.cars.model.Post;
 
 import java.util.List;
@@ -7,19 +10,19 @@ import java.util.Optional;
 
 public interface PostService {
 
-    Optional<Post> create(Post post);
+    Optional<Post> create(PostCreateDto postDto, PhotoDto photoDto);
 
     boolean update(Post post);
 
     boolean delete(int postId);
 
-    List<Post> findAllOrderById();
+    List<PostDto> findAllOrderById();
 
-    Optional<Post> findById(int postId);
+    Optional<PostDto> findById(int postId);
 
-    List<Post> findAllPostAtLastDay();
+    List<PostDto> findAllPostAtLastDay();
 
-    List<Post> findAllPostWithPhoto();
+    List<PostDto> findAllPostWithPhoto();
 
-    List<Post> findAllPostWithModel(String name);
+    List<PostDto> findAllPostWithModel(String name);
 }
