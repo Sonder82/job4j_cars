@@ -32,8 +32,8 @@ public class Car {
     @JoinColumn(name = "modelCar_id")
     private ModelCar modelCar;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "engine_id", foreignKey = @ForeignKey(name = "ENGINE_ID_FK"))
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "engine_id")
     private Engine engine;
 
     @ManyToOne(cascade = CascadeType.ALL)
