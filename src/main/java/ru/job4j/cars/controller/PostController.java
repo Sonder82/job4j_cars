@@ -69,6 +69,16 @@ public class PostController {
             return "errors/404";
         }
         model.addAttribute("post", postOptional.get());
-        return "posts/editPost";
+        return "posts/info";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(Model model, @PathVariable int id) {
+        boolean isDeleted = postService.delete(id);
+        if (!isDeleted) {
+            model.addAttribute("message", "Объявление с указанным идентификатором не найдено");
+            return "errors/404";
+        }
+        return "redirect:/posts";
     }
 }

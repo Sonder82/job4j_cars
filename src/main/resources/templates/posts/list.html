@@ -18,7 +18,7 @@
             <div class="collapse navbar-collapse">
                 <div class="navbar-nav me-auto">
                     <a class="nav-item nav-link active" href="/">Главная</a>
-                    <a class="nav-item nav-link" th:href="@{/tasks}">Все объявления</a>
+                    <a class="nav-item nav-link" th:href="@{/posts}">Все объявления</a>
                 </div>
                 <div class="d-flex" th:if="${user.login == 'Гость'}">
                     <a class="nav-link text-secondary me-3" th:href="@{/users/register}">Регистрация</a>
@@ -39,6 +39,7 @@
                     <th scope="col">#</th>
                     <th scope="col">Фото</th>
                     <th scope="col">Название</th>
+                    <th scope="col">Модель автомобиля</th>
                     <th scope="col">Дата объявления</th>
                     <th scope="col">Цена автомобиля в рублях</th>
                     <th scope="col">Статус объявления</th>
@@ -51,7 +52,8 @@
                     <td>
                         <img th:src="@{/photos/{photoId}(photoId=${post.photoId})}" class="w-25" alt="No image">
                     </td>
-                    <td th:text="${post.carName}" th:href="@{|posts/editPost?id=${post.id}|}"></a></td>
+                    <td th:text="${post.carName}" />
+                    <td><a th:text="${post.modelCarName}" th:href="@{|posts/editPost?id=${post.id}|}"></a></td>
                     <td th:text="${#temporals.format(post.created, 'dd-MM-yyyy HH:mm')}"/>
                     <td th:text="${post.price}" />
                     <td th:text="${post.sold} == true ? 'Продано' : 'В продаже'" />

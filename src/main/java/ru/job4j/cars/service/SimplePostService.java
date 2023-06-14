@@ -85,8 +85,8 @@ public class SimplePostService implements PostService {
     }
 
     private PostDto convertToDto(Post post) {
-        return new PostDto(post.getId(), post.getCar().getName(), post.getCar().getBody().getName(),
-                post.getCar().getModelCar().getName(), post.getCar().getEngine().getName(),
+        return new PostDto(post.getId(), post.getCar().getName(), post.getCar().getModelCar().getName(),
+                post.getCar().getBody().getName(), post.getCar().getEngine().getName(),
                 post.getCar().getTransmission().getName(), post.getPrice(), post.getPhoto().getId(),
                 post.getDescription(), post.getCreated(), post.isSold(), post.getUser());
     }
