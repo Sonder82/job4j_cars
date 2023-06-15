@@ -16,6 +16,8 @@ public interface PostService {
 
     boolean delete(int postId);
 
+    boolean setSold(Integer id);
+
     List<PostDto> findAllOrderById();
 
     Optional<PostDto> findById(int postId);

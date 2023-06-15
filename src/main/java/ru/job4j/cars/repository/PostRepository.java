@@ -12,6 +12,8 @@ public interface PostRepository {
 
     boolean delete(int postId);
 
+    boolean setSold(int id);
+
     List<Post> findAllOrderById();
 
     Optional<Post> findById(int postId);

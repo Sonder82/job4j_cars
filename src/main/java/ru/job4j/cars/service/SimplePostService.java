@@ -92,6 +92,11 @@ public class SimplePostService implements PostService {
     }
 
     @Override
+    public boolean setSold(Integer id) {
+        return postRepository.setSold(id);
+    }
+
+    @Override
     public Optional<PostDto> findById(int postId) {
         Optional<Post> postOptional = postRepository.findById(postId);
         if (postOptional.isEmpty()) {

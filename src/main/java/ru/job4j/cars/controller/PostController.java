@@ -57,7 +57,7 @@ public class PostController {
             model.addAttribute("message", "Ошибка при добавлении объявления");
             return "errors/404";
         }
-        model.addAttribute("message", "Объявление успешно добавлено");
+        model.addAttribute("message", "Объявление добавлено");
         return "posts/success";
     }
 
@@ -80,5 +80,16 @@ public class PostController {
             return "errors/404";
         }
         return "redirect:/posts";
+    }
+
+    @GetMapping("/perform/{id}")
+    public String perform(Model model, @PathVariable int id) {
+        var updateSold = postService.setSold(id);
+        if (!updateSold) {
+            model.addAttribute("message", "Объявление с указанным идентификатором не найдено");
+            return "errors/404";
+        }
+        model.addAttribute("message", "Поздравляем с продажей! У объявления статус Продано");
+        return "posts/success";
     }
 }
