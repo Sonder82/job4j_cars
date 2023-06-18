@@ -18,7 +18,7 @@
             <div class="collapse navbar-collapse">
                 <div class="navbar-nav me-auto">
                     <a class="nav-item nav-link active" href="/">Главная</a>
-                    <a class="nav-item nav-link" th:href="@{/posts}">Все объявления</a>
+                    <a class="nav-item nav-link active" th:href="@{/posts}">Все объявления</a>
                     <a class="nav-item nav-link" th:href="@{/posts/day}">Объявления за последний день</a>
                     <a class="nav-item nav-link" th:href="@{/posts/photo}">Объявления с фото</a>
                 </div>
@@ -34,32 +34,17 @@
         </div>
     </nav>
     <div class="container">
-        <form class="mt-3">
-            <div class="mb-3">
-                <label for="bodyName" class="form-label"><b>Кузов</b></label>
-                <p class="form-control" id="bodyName" rows="25"
-                   th:text="${post.bodyName}"></p>
-                <label for="engineName" class="form-label"><b>Двигатель</b></label>
-                <p class="form-control" id="engineName" rows="25" th:text="${post.engineName}"></p>
-                <label for="transmissionName" class="form-label"><b>Трансмиссия</b></label>
-                <p class="form-control" id="transmissionName" rows="25"
-                   th:text="${post.transmissionName}"></p>
-                <label for="description" class="form-label"><b>Описание</b></label>
-                <p class="form-control" id="description" rows="25" th:text="${post.description}"></p>
-                <label for="created" class="form-label"><b>Дата создания</b></label>
-                <p class="form-control" id="created" rows="25"
-                   th:text="${#temporals.format(post.created, 'dd-MM-yyyy HH:mm')}"></p>
-
+        <h3 class="mt-3">Объявления не найдены</h3>
+        <p class="text-danger" th:text="${message}"></p>
+    </div>
+    <div class="mb-3 row">
+        <div class="row">
+            <p></p>
+            <div class="col-6">
+                <a class="btn btn-secondary w-100" th:href="@{/posts}">Выбрать все объявления</a>
             </div>
-            <div class="mb-3 row">
-                <div class="row">
-                    <div class="col-4"><a class="btn btn-success w-100"
-                                          th:href="@{/posts/perform/{id}(id=${post.id})}">Установить статус Продано</a></div>
-                    <div class="col-4"><a class="btn btn-dark w-100"
-                                          th:href="@{/posts/delete/{id}(id=${post.id})}">Удалить объявление</a></div>
-                </div>
-            </div>
-        </form>
+            <p></p>
+        </div>
     </div>
 </div>
 </body>

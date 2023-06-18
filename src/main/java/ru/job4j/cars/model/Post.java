@@ -39,7 +39,7 @@ public class Post {
     private List<PriceHistory> priceHistoryList = new ArrayList<>();
 
     @OneToOne
-    @JoinColumn(name = "photo_id", referencedColumnName = "id")
+    @JoinColumn(name = "photo_id")
     private Photo photo;
 
     @ManyToMany

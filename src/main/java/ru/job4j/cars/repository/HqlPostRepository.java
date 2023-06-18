@@ -92,15 +92,15 @@ public class HqlPostRepository implements PostRepository {
         var dateNow = LocalDateTime.now();
         var date = LocalDateTime.now().minusDays(1);
         return crudRepository.query(
-                "FROM Post AS p JOIN FETCH p.photo "
-                        + "WHERE created BETWEEN :fDate AND :fDateNow", Post.class,
+                "FROM Post AS p  "
+                        + "WHERE p.created BETWEEN :fDate AND :fDateNow", Post.class,
                 Map.of("fDate", date, "fDateNow", dateNow));
     }
 
     @Override
     public List<Post> findAllPostWithPhoto() {
         return crudRepository.query(
-                "FROM Post f JOIN FETCH f.photo WHERE f.photo.id IS NOT NULL", Post.class);
+                "FROM Post p JOIN FETCH p.photo WHERE p.photo.id IS NOT NULL", Post.class);
     }
 
     @Override

@@ -92,4 +92,26 @@ public class PostController {
         model.addAttribute("message", "Поздравляем с продажей! У объявления статус Продано");
         return "posts/success";
     }
+
+    @GetMapping("/day")
+    public String postDay(Model model) {
+        var postCollection = postService.findAllPostAtLastDay();
+        if (postCollection.isEmpty()) {
+            model.addAttribute("message", "Новых объявлений  не найдено");
+            return "info/info";
+        }
+        model.addAttribute("posts", postCollection);
+        return "posts/list";
+    }
+
+    @GetMapping("/photo")
+    public String postPhoto(Model model) {
+        var postCollection = postService.findAllPostWithPhoto();
+        if (postCollection.isEmpty()) {
+            model.addAttribute("message", "Объявлений с фото не найдено");
+            return "info/info";
+        }
+        model.addAttribute("tasks", postCollection);
+        return "posts/list";
+    }
 }
