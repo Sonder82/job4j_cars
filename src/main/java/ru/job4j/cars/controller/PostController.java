@@ -111,7 +111,7 @@ public class PostController {
             model.addAttribute("message", "Объявлений с фото не найдено");
             return "info/info";
         }
-        model.addAttribute("tasks", postCollection);
+        model.addAttribute("posts", postCollection);
         return "posts/list";
     }
 }

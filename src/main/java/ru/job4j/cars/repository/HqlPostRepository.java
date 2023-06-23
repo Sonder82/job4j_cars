@@ -69,7 +69,7 @@ public class HqlPostRepository implements PostRepository {
     @Override
     public List<Post> findAllPostWithPhoto() {
         return crudRepository.query(
-                "FROM Post p JOIN FETCH p.photo WHERE p.photo.id IS NOT NULL", Post.class);
+                "FROM Post p JOIN FETCH p.car JOIN FETCH p.photo ph WHERE ph.id IS NOT NULL", Post.class);
     }
 
     @Override

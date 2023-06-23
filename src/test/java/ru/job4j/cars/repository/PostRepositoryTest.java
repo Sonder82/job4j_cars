@@ -47,6 +47,8 @@ public class PostRepositoryTest {
 
     private final Car car = new Car();
 
+    private final Photo photo = new Photo();
+
     @BeforeEach
     public void initForPost() {
         createFile();
@@ -70,6 +72,7 @@ public class PostRepositoryTest {
         post.setCar(carRsl);
         post.setSold(false);
         post.setPrice(1);
+        post.setPhoto(photo);
         postRepository.create(post);
     }
 
@@ -84,12 +87,12 @@ public class PostRepositoryTest {
         session.createQuery("DELETE FROM ModelCar").executeUpdate();
         session.createQuery("DELETE FROM Body").executeUpdate();
         session.createQuery("DELETE FROM Transmission").executeUpdate();
+        session.createQuery("DELETE FROM Photo").executeUpdate();
         session.getTransaction();
         session.close();
     }
 
     private void createFile() {
-        var photo = new Photo();
         photo.setPath("path");
         photo.setName("name");
         photoRepository.create(photo);

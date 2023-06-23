@@ -40,7 +40,7 @@ public class Car {
     @JoinColumn(name = "transmission_id")
     private Transmission transmission;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "history_owners",
             joinColumns = {@JoinColumn(name = "car_id", nullable = false, updatable = false)},
