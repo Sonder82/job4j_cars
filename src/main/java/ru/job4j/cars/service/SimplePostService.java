@@ -99,11 +99,7 @@ public class SimplePostService implements PostService {
     @Override
     public Optional<PostDto> findById(int postId) {
         Optional<Post> postOptional = postRepository.findById(postId);
-        if (postOptional.isEmpty()) {
-            return Optional.empty();
-        }
-        var post = postOptional.get();
-        return Optional.of(convertToDto(post));
+        return postOptional.map(this::convertToDto);
     }
 
     @Override

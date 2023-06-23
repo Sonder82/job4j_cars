@@ -112,4 +112,10 @@ public class PostRepositoryTest {
 
         assertThat(postRepository.findAllPostWithModel(car.getName())).isEqualTo(List.of(post));
     }
+
+    @Test
+    public void whenFindWithPhoto() {
+
+        assertThat(postRepository.findAllPostWithPhoto()).isEqualTo(List.of(post));
+    }
 }

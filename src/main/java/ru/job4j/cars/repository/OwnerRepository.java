@@ -1,8 +1,6 @@
 package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.Owner;
 
@@ -14,8 +12,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class OwnerRepository {
 
-    private static final Logger LOG = LoggerFactory.getLogger(OwnerRepository.class.getName());
-
     private final CrudRepository crudRepository;
 
     /**
@@ -25,14 +21,8 @@ public class OwnerRepository {
      * @return собственник с id.
      */
     public Optional<Owner> create(Owner owner) {
-        Optional<Owner> rsl = Optional.empty();
-        try {
-            crudRepository.run(session -> session.save(owner));
-            rsl = Optional.of(owner);
-        } catch (Exception e) {
-            LOG.error("Error message: " + e.getMessage(), e);
-        }
-        return rsl;
+        crudRepository.run(session -> session.save(owner));
+        return Optional.of(owner);
     }
 
     /**
@@ -41,14 +31,8 @@ public class OwnerRepository {
      * @param owner владелец.
      */
     public boolean update(Owner owner) {
-        boolean rsl = false;
-        try {
-            crudRepository.run(session -> session.merge(owner));
-            rsl = true;
-        } catch (Exception e) {
-            LOG.error("Error message: " + e.getMessage(), e);
-        }
-        return rsl;
+        crudRepository.run(session -> session.merge(owner));
+        return true;
     }
 
     /**
@@ -57,17 +41,10 @@ public class OwnerRepository {
      * @param ownerId ID
      */
     public boolean delete(int ownerId) {
-        boolean rsl = false;
-        try {
-            crudRepository.run(
-                    "DELETE Owner WHERE id = :fId",
-                    Map.of("fId", ownerId)
-            );
-            rsl = true;
-        } catch (Exception e) {
-            LOG.error("Error message: " + e.getMessage(), e);
-        }
-        return rsl;
+        crudRepository.run(
+                "DELETE Owner WHERE id = :fId",
+                Map.of("fId", ownerId));
+        return true;
     }
 
     /**
@@ -88,7 +65,6 @@ public class OwnerRepository {
     public Optional<Owner> findById(int ownerId) {
         return crudRepository.optional(
                 "FROM Owner  WHERE f.id = :fId", Owner.class,
-                Map.of("fId", ownerId)
-        );
+                Map.of("fId", ownerId));
     }
 }

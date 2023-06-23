@@ -55,7 +55,7 @@ public class PostController {
                 fileDto.getBytes()));
         if (postOptional.isEmpty()) {
             model.addAttribute("message", "Ошибка при добавлении объявления");
-            return "errors/404";
+            return "errors/409";
         }
         model.addAttribute("message", "Объявление добавлено");
         return "posts/success";

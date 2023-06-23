@@ -1,8 +1,6 @@
 package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.Car;
 
@@ -12,9 +10,7 @@ import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
-public class HqlCarRepository  implements CarRepository {
-
-    private static final Logger LOG = LoggerFactory.getLogger(HqlCarRepository.class.getName());
+public class HqlCarRepository implements CarRepository {
 
     private final CrudRepository crudRepository;
 
@@ -26,14 +22,8 @@ public class HqlCarRepository  implements CarRepository {
      */
     @Override
     public Optional<Car> create(Car car) {
-        Optional<Car> rsl = Optional.empty();
-        try {
-            crudRepository.run(session -> session.save(car));
-            rsl = Optional.of(car);
-        } catch (Exception e) {
-            LOG.error("Error message: " + e.getMessage(), e);
-        }
-        return rsl;
+        crudRepository.run(session -> session.save(car));
+        return Optional.of(car);
     }
 
     /**
@@ -43,14 +33,8 @@ public class HqlCarRepository  implements CarRepository {
      */
     @Override
     public boolean update(Car car) {
-        boolean rsl = false;
-        try {
-            crudRepository.run(session -> session.merge(car));
-            rsl = true;
-        } catch (Exception e) {
-            LOG.error("Error message: " + e.getMessage(), e);
-        }
-        return rsl;
+        crudRepository.run(session -> session.merge(car));
+        return true;
     }
 
     /**
@@ -60,17 +44,10 @@ public class HqlCarRepository  implements CarRepository {
      */
     @Override
     public boolean delete(int carId) {
-        boolean rsl = false;
-        try {
-            crudRepository.run(
-                    "DELETE Car WHERE id = :fId",
-                    Map.of("fId", carId)
-            );
-            rsl = true;
-        } catch (Exception e) {
-            LOG.error("Error message: " + e.getMessage(), e);
-        }
-        return rsl;
+        crudRepository.run(
+                "DELETE Car WHERE id = :fId",
+                Map.of("fId", carId));
+        return true;
     }
 
     /**
@@ -93,7 +70,6 @@ public class HqlCarRepository  implements CarRepository {
     public Optional<Car> findById(int carId) {
         return crudRepository.optional(
                 "FROM Car f JOIN FETCH f.engine WHERE f.id = :fId", Car.class,
-                Map.of("fId", carId)
-        );
+                Map.of("fId", carId));
     }
 }

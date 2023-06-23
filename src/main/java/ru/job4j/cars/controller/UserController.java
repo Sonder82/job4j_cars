@@ -46,7 +46,7 @@ public class UserController {
         Optional<User> optionalUser = userService.create(user);
         if (optionalUser.isEmpty()) {
             model.addAttribute("message", "Пользователь с таким login уже существует");
-            return "errors/404";
+            return "users/login";
         }
         return "redirect:/index";
     }

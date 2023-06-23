@@ -1,8 +1,6 @@
 package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.User;
 
@@ -12,8 +10,6 @@ import java.util.*;
 @Repository
 @AllArgsConstructor
 public class HqlUserRepository implements UserRepository {
-
-    private static final Logger LOG = LoggerFactory.getLogger(HqlCarRepository.class.getName());
 
     private final CrudRepository crudRepository;
 
@@ -25,14 +21,8 @@ public class HqlUserRepository implements UserRepository {
      */
     @Override
     public Optional<User> create(User user) {
-        Optional<User> rsl = Optional.empty();
-        try {
-            crudRepository.run(session -> session.save(user));
-            rsl = Optional.of(user);
-        } catch (Exception e) {
-            LOG.error("Error message: " + e.getMessage(), e);
-        }
-        return rsl;
+        crudRepository.run(session -> session.save(user));
+        return Optional.of(user);
     }
 
     /**
@@ -42,14 +32,8 @@ public class HqlUserRepository implements UserRepository {
      */
     @Override
     public boolean update(User user) {
-        boolean rsl = false;
-        try {
-            crudRepository.run(session -> session.merge(user));
-            rsl = true;
-        } catch (Exception e) {
-            LOG.error("Error message: " + e.getMessage(), e);
-        }
-        return rsl;
+        crudRepository.run(session -> session.merge(user));
+        return true;
     }
 
     /**
@@ -59,17 +43,10 @@ public class HqlUserRepository implements UserRepository {
      */
     @Override
     public boolean delete(int userId) {
-        boolean rsl = false;
-        try {
-            crudRepository.run(
-                    "DELETE User WHERE id = :fId",
-                    Map.of("fId", userId)
-            );
-            rsl = true;
-        } catch (Exception e) {
-            LOG.error("Error message: " + e.getMessage(), e);
-        }
-        return rsl;
+        crudRepository.run(
+                "DELETE User WHERE id = :fId",
+                Map.of("fId", userId));
+        return true;
     }
 
     /**
@@ -90,9 +67,9 @@ public class HqlUserRepository implements UserRepository {
      */
     @Override
     public Optional<User> findById(int userId) {
-       return crudRepository.optional(
-                    "FROM User WHERE id = :fId", User.class,
-               Map.of("fId", userId));
+        return crudRepository.optional(
+                "FROM User WHERE id = :fId", User.class,
+                Map.of("fId", userId));
 
     }
 
@@ -104,9 +81,9 @@ public class HqlUserRepository implements UserRepository {
      */
     @Override
     public List<User> findByLikeLogin(String key) {
-       return crudRepository.query(
-                    "FROM User WHERE login LIKE :fLogin", User.class,
-               Map.of("fKey", "%" + key + "%"));
+        return crudRepository.query(
+                "FROM User WHERE login LIKE :fLogin", User.class,
+                Map.of("fKey", "%" + key + "%"));
 
     }
 
@@ -118,8 +95,8 @@ public class HqlUserRepository implements UserRepository {
      */
     @Override
     public Optional<User> findByLogin(String login) {
-       return crudRepository.optional(
-                    "FROM User WHERE login = :fLogin", User.class,
+        return crudRepository.optional(
+                "FROM User WHERE login = :fLogin", User.class,
                 Map.of("fLogin", login));
     }
 

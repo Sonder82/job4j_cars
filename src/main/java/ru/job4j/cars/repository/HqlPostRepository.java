@@ -1,8 +1,6 @@
 package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.Post;
 
@@ -15,62 +13,34 @@ import java.util.Optional;
 @AllArgsConstructor
 public class HqlPostRepository implements PostRepository {
 
-    private static final Logger LOG = LoggerFactory.getLogger(HqlCarRepository.class.getName());
-
     private final CrudRepository crudRepository;
 
     @Override
     public Optional<Post> create(Post post) {
-        Optional<Post> rsl = Optional.empty();
-        try {
-            crudRepository.run(session -> session.save(post));
-            rsl = Optional.of(post);
-        } catch (Exception e) {
-            LOG.error("Error message: " + e.getMessage(), e);
-        }
-        return rsl;
+        crudRepository.run(session -> session.save(post));
+        return Optional.of(post);
     }
 
     @Override
     public boolean update(Post post) {
-        boolean rsl = false;
-        try {
-            crudRepository.run(session -> session.merge(post));
-            rsl = true;
-        } catch (Exception e) {
-            LOG.error("Error message: " + e.getMessage(), e);
-        }
-        return rsl;
+        crudRepository.run(session -> session.merge(post));
+        return true;
     }
 
     @Override
     public boolean delete(int postId) {
-        boolean rsl = false;
-        try {
-            crudRepository.run(
-                    "DELETE Post WHERE id = :fId",
-                    Map.of("fId", postId)
-            );
-            rsl = true;
-        } catch (Exception e) {
-            LOG.error("Error message: " + e.getMessage(), e);
-        }
-        return rsl;
+        crudRepository.run(
+                "DELETE Post WHERE id = :fId",
+                Map.of("fId", postId));
+        return true;
     }
 
     @Override
     public boolean setSold(int id) {
-        boolean rsl = false;
-        try {
-            crudRepository.run(
-                    "Update Post SET sold = :fSold  WHERE id = :fId",
-                    Map.of("fId", id, "fSold", true)
-            );
-            rsl = true;
-        } catch (Exception e) {
-            LOG.error("Error message: " + e.getMessage(), e);
-        }
-        return rsl;
+        crudRepository.run(
+                "Update Post SET sold = :fSold  WHERE id = :fId",
+                Map.of("fId", id, "fSold", true));
+        return true;
     }
 
     @Override
@@ -83,8 +53,7 @@ public class HqlPostRepository implements PostRepository {
     public Optional<Post> findById(int postId) {
         return crudRepository.optional(
                 "FROM Post WHERE id = :fId", Post.class,
-                Map.of("fId", postId)
-        );
+                Map.of("fId", postId));
     }
 
     @Override

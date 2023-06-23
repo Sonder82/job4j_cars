@@ -1,8 +1,6 @@
 package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.Engine;
 
@@ -14,8 +12,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class HqlEngineRepository implements EngineRepository {
 
-    private static final Logger LOG = LoggerFactory.getLogger(HqlEngineRepository.class.getName());
-
     private final CrudRepository crudRepository;
 
     /**
@@ -26,14 +22,8 @@ public class HqlEngineRepository implements EngineRepository {
      */
     @Override
     public Optional<Engine> create(Engine engine) {
-        Optional<Engine> rsl = Optional.empty();
-        try {
-            crudRepository.run(session -> session.save(engine));
-            rsl = Optional.of(engine);
-        } catch (Exception e) {
-            LOG.error("Error message: " + e.getMessage(), e);
-        }
-        return rsl;
+        crudRepository.run(session -> session.save(engine));
+        return Optional.of(engine);
     }
 
     /**
@@ -43,14 +33,8 @@ public class HqlEngineRepository implements EngineRepository {
      */
     @Override
     public boolean update(Engine engine) {
-        boolean rsl = false;
-        try {
-            crudRepository.run(session -> session.merge(engine));
-            rsl = true;
-        } catch (Exception e) {
-            LOG.error("Error message: " + e.getMessage(), e);
-        }
-        return rsl;
+        crudRepository.run(session -> session.merge(engine));
+        return true;
     }
 
     /**
@@ -60,17 +44,10 @@ public class HqlEngineRepository implements EngineRepository {
      */
     @Override
     public boolean delete(int engineId) {
-        boolean rsl = false;
-        try {
-            crudRepository.run(
-                    "DELETE Engine WHERE id = :fId",
-                    Map.of("fId", engineId)
-            );
-            rsl = true;
-        } catch (Exception e) {
-            LOG.error("Error message: " + e.getMessage(), e);
-        }
-        return rsl;
+        crudRepository.run(
+                "DELETE Engine WHERE id = :fId",
+                Map.of("fId", engineId));
+        return true;
     }
 
     /**
@@ -93,7 +70,6 @@ public class HqlEngineRepository implements EngineRepository {
     public Optional<Engine> findById(int engineId) {
         return crudRepository.optional(
                 "FROM Engine  WHERE id = :fId", Engine.class,
-                Map.of("fId", engineId)
-        );
+                Map.of("fId", engineId));
     }
 }
