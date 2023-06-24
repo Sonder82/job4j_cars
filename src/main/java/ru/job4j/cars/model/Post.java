@@ -10,6 +10,21 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@NamedEntityGraph(
+        name = "post-entity-graph-with-car-owners",
+        attributeNodes = {
+                @NamedAttributeNode("photo"),
+                @NamedAttributeNode(value = "car", subgraph = "car-subgraph"),
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "car-subgraph",
+                        attributeNodes = {
+                                @NamedAttributeNode("owners")
+                        }
+                )
+        }
+)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

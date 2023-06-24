@@ -1,6 +1,5 @@
 package ru.job4j.cars.repository;
 
-
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -10,10 +9,7 @@ import org.junit.jupiter.api.Test;
 import ru.job4j.cars.model.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -38,10 +34,6 @@ public class PostRepositoryTest {
     private final BodyRepository bodyRepository = new HqlBodyRepository(crudRepository);
 
     private final TransmissionRepository transmissionRepository = new HqlTransmissionRepository(crudRepository);
-
-    private final OwnerRepository ownerRepository = new OwnerRepository(crudRepository);
-
-    private final UserRepository userRepository = new HqlUserRepository(crudRepository);
 
     private final Post post = new Post();
 
@@ -100,25 +92,21 @@ public class PostRepositoryTest {
 
     @Test
     public void whenAddNewPostThenRepoHasSamePost() {
-
         assertThat(postRepository.findById(post.getId()).get()).isEqualTo(post);
     }
 
     @Test
     public void whenFindAllForTheLastDay() {
-
         assertThat(postRepository.findAllPostAtLastDay()).isEqualTo(List.of(post));
     }
 
     @Test
     public void whenFindByModel() {
-
         assertThat(postRepository.findAllPostWithModel(car.getName())).isEqualTo(List.of(post));
     }
 
     @Test
     public void whenFindWithPhoto() {
-
         assertThat(postRepository.findAllPostWithPhoto()).isEqualTo(List.of(post));
     }
 }
